@@ -1,0 +1,82 @@
+✅ 1️⃣ Create Database
+CREATE DATABASE restaurant;
+USE restaurant;
+
+✅ 2️⃣ Restaurant Table
+CREATE TABLE restaurant (
+    restaurant_id INT AUTO_INCREMENT PRIMARY KEY,
+    restaurant_name VARCHAR(100),
+    restaurant_description VARCHAR(255),
+    restaurant_address VARCHAR(255),
+    restaurant_rating INT,
+    restaurant_cuisine VARCHAR(100),
+    restaurant_delivery_time VARCHAR(50),
+    restaurant_isactive VARCHAR(10),
+    restaurant_imageurl VARCHAR(255),
+    restaurant_admin_userid INT
+);
+
+✅ 3️⃣ Menu Table
+CREATE TABLE menu (
+    menu_id INT AUTO_INCREMENT PRIMARY KEY,
+    menu_name VARCHAR(100),
+    menu_price INT,
+    menu_isavailable VARCHAR(20),
+    menu_imageurl VARCHAR(255),
+    menu_restaurant_id INT,
+    FOREIGN KEY (menu_restaurant_id) REFERENCES restaurant(restaurant_id)
+);
+
+✅ 4️⃣ Orders Table
+CREATE TABLE orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    restaurant_id INT,
+    user_id INT,
+    total_amount INT,
+    payment_method VARCHAR(50),
+    status VARCHAR(50),
+    address VARCHAR(255),
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant(restaurant_id)
+);
+
+✅ 5️⃣ Order Items Table
+CREATE TABLE order_items (
+    order_item_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    menu_id INT,
+    quantity INT,
+    item_total INT,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
+);
+
+✅ 6️⃣ Sample Insert Queries (Demo Data)
+Insert Restaurants
+INSERT INTO restaurant 
+(restaurant_name, restaurant_description, restaurant_address, restaurant_rating, restaurant_cuisine, restaurant_delivery_time, restaurant_isactive, restaurant_imageurl, restaurant_admin_userid)
+VALUES
+('Spice Hub', 'South Indian Special', 'Chennai', 4, 'South Indian', '30 mins', 'Yes', 'spicehub.jpg', 1),
+('Food Palace', 'Multi Cuisine Restaurant', 'Bangalore', 5, 'Multi Cuisine', '40 mins', 'Yes', 'foodpalace.jpg', 2);
+
+Insert Menu Items
+INSERT INTO menu 
+(menu_name, menu_price, menu_isavailable, menu_imageurl, menu_restaurant_id)
+VALUES
+('Idli', 40, 'Available', 'idli.jpg', 1),
+('Dosa', 60, 'Available', 'dosa.jpg', 1),
+('Paneer Butter Masala', 180, 'Available', 'paneer.jpg', 2),
+('Butter Naan', 40, 'Available', 'naan.jpg', 2);
+
+Insert Orders
+INSERT INTO orders 
+(restaurant_id, user_id, total_amount, payment_method, status, address)
+VALUES
+(1, 1, 200, 'UPI', 'Placed', 'HSR Layout, Bangalore');
+
+Insert Order Items
+INSERT INTO order_items 
+(order_id, menu_id, quantity, item_total)
+VALUES
+(1, 1, 2, 80),
+(1, 2, 2, 120);
